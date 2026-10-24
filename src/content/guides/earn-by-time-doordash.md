@@ -105,9 +105,7 @@ Tracking your personal shift data across both modes illuminates your actual net 
 If you do not see the option to select Earn by Time, consider these officially documented causes:
 
 - **City availability:** DoorDash states the mode is available only in select US markets. Not all regions or zones offer it.
-- **Account status:** Repeated time-related violations or excessive delays can lock access to Earn by Time. While locked, you can still deliver using Earn per Offer.
-- **App updates:** Ensure you are using the most recent version of the Dasher app with location permissions set to "Always Allow" while dashing.
-- **Zone capacity:** During certain shifts, DoorDash may limit the number of couriers active on Earn by Time simultaneously.
+- **Account status:** Repeated time-related violations can lock access to Earn by Time. While locked, you can still deliver using Earn per Offer.
 
 ## Sources
 

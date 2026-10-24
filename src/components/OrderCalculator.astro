@@ -358,16 +358,23 @@ const rates = SITE_CONFIG.rates;
           return `$${val.toFixed(2)}`;
         }
 
-        function calculate() {
-          const pay = parseFloat(inputs.pay?.value || '0');
-          const miles = parseFloat(inputs.miles?.value || '0');
-          const minutes = parseFloat(inputs.minutes?.value || '0');
-          const mpg = parseFloat(inputs.mpg?.value || '25');
-          const gas = parseFloat(inputs.gas?.value || '0');
-          const maint = parseFloat(inputs.maint?.value || '0');
+        function parseVal(input, fallback = 0) {
+          if (!input || !input.value) return fallback;
+          const normalized = String(input.value).trim().replace(',', '.');
+          const num = parseFloat(normalized);
+          return isNaN(num) ? fallback : num;
+        }
 
-          const threshWorth = parseFloat(inputs.threshWorth?.value || String(initialThreshWorth));
-          const threshBorder = parseFloat(inputs.threshBorder?.value || String(initialThreshBorder));
+        function calculate() {
+          const pay = parseVal(inputs.pay, 0);
+          const miles = parseVal(inputs.miles, 0);
+          const minutes = parseVal(inputs.minutes, 0);
+          const mpg = parseVal(inputs.mpg, 25);
+          const gas = parseVal(inputs.gas, 0);
+          const maint = parseVal(inputs.maint, 0);
+
+          const threshWorth = parseVal(inputs.threshWorth, initialThreshWorth);
+          const threshBorder = parseVal(inputs.threshBorder, initialThreshBorder);
 
           // 1. Pay Per Mile
           const payPerMile = miles > 0 ? pay / miles : 0;

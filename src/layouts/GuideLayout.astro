@@ -39,7 +39,7 @@ const canonicalUrl = Astro.url.href;
 
 const breadcrumbs = [
   { name: 'Guides', url: '/' },
-  { name: mainKeyword, url: Astro.url.pathname }
+  { name: title, url: Astro.url.pathname }
 ];
 ---
 
@@ -59,9 +59,9 @@ const breadcrumbs = [
 
     <!-- Article Header -->
     <header class="mb-8">
-      <!-- Top Primary Keyword H1 -->
+      <!-- Top Primary H1 Title -->
       <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.15]">
-        {mainKeyword}
+        {title}
       </h1>
 
       <p class="mt-3 text-lg text-slate-600 dark:text-slate-300">
@@ -72,7 +72,7 @@ const breadcrumbs = [
       <div class="mt-5 flex flex-wrap items-center justify-between gap-4 border-y border-slate-200 py-3 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
         <div class="flex items-center gap-3">
           <div class="h-9 w-9 rounded-full bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300 flex items-center justify-center font-bold text-sm">
-            DM
+            MD
           </div>
           <div>
             <div class="font-semibold text-slate-900 dark:text-slate-200">

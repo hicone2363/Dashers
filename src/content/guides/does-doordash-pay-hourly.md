@@ -69,7 +69,6 @@ New York City sets a minimum pay rate for app-based restaurant and grocery deliv
 Key regulatory provisions:
 - Customer tips cannot be counted by platforms toward satisfying the minimum pay requirement.
 - The rule protects app delivery workers across food and grocery platforms.
-- DoorDash provides minimum pay reconciliations for NYC deliveries in accordance with DCWP rules as outlined in its NYC Dasher support resources.
 
 *Source: NYC Department of Consumer and Worker Protection (DCWP).*
 
@@ -95,9 +94,13 @@ Because California minimum wages differ across cities and counties based on pick
 
 When assessing whether your deliveries are profitable, looking only at the active-hour rate can be misleading. Always distinguish between gross time and net profit:
 
-$$\text{True Gross Hourly} = \frac{\text{Total Pay (including tips)}}{\text{Total Dash Time (including idle waiting)}}$$
+```text
+True Gross Hourly = Total Pay (including tips) ÷ Total Dash Hours (including idle waiting)
+```
 
-$$\text{Real Net Hourly} = \frac{\text{Total Pay} - (\text{Fuel Expenses} + \text{Vehicle Wear})}{\text{Total Dash Time}}$$
+```text
+Real Net Hourly = [Total Pay − (Fuel Expenses + Vehicle Wear)] ÷ Total Dash Hours
+```
 
 Use our free [Is This Order Worth It? Calculator](/tools/is-this-order-worth-it/) to test incoming offers and estimate your net pay per hour after subtracting vehicular costs.
 

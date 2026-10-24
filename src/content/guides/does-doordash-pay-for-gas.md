@@ -87,9 +87,9 @@ Under federal tax rules, independent couriers can generally offset automobile op
 
 **Illustrative Calculation Example (10,000 Annual Miles):**
 *Assuming an illustrative 50/50 split of 5,000 miles driven in each half of the calendar year:*
-- 5,000 delivery miles (Jan 1–Jun 30): $5,000 \times \$0.725 = \$3,625$.
-- 5,000 delivery miles (Jul 1–Dec 31): $5,000 \times \$0.760 = \$3,800$.
-- **Total Estimated Potential Deduction:** $\mathbf{\$7,425}$.
+- 5,000 delivery miles (Jan 1–Jun 30): 5,000 miles × $0.725 = $3,625
+- 5,000 delivery miles (Jul 1–Dec 31): 5,000 miles × $0.760 = $3,800
+- **Total Estimated Potential Deduction:** **$7,425**
 
 Always maintain a contemporaneous mileage log recording dates, destinations, and trip purposes. Consult a certified CPA or tax professional for your personal tax filing.
 

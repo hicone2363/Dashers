@@ -2,6 +2,13 @@
 import { SITE_CONFIG } from '../data/config';
 
 const pathname = Astro.url.pathname;
+
+const guideLinks = [
+  { label: "Earn by Time Mode", href: "/earn-by-time-doordash/" },
+  { label: "Pay Per Delivery (Base Pay & Tips)", href: "/doordash-pay-per-delivery/" },
+  { label: "Does DoorDash Pay Hourly?", href: "/does-doordash-pay-hourly/" },
+  { label: "Does DoorDash Pay For Gas?", href: "/does-doordash-pay-for-gas/" },
+];
 ---
 
 <header class="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
@@ -20,23 +27,62 @@ const pathname = Astro.url.pathname;
     </a>
 
     <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center gap-1" aria-label="Main Navigation">
-      {SITE_CONFIG.navItems.map((item) => {
-        const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-        return (
-          <a
-            href={item.href}
-            class:list={[
-              'px-3.5 py-2 rounded-md text-sm font-medium transition-colors min-h-[44px] flex items-center',
-              isActive
-                ? 'bg-slate-100 text-brand-600 dark:bg-slate-800 dark:text-brand-400 font-semibold'
-                : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/60'
-            ]}
-          >
-            {item.label}
-          </a>
-        );
-      })}
+    <nav class="hidden md:flex items-center gap-2" aria-label="Main Navigation">
+      <a
+        href="/"
+        class:list={[
+          'px-3.5 py-2 rounded-md text-sm font-medium transition-colors min-h-[44px] flex items-center',
+          pathname === '/'
+            ? 'bg-slate-100 text-brand-600 dark:bg-slate-800 dark:text-brand-400 font-semibold'
+            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/60'
+        ]}
+      >
+        Home
+      </a>
+
+      <!-- Guides Dropdown Menu -->
+      <div class="relative group">
+        <button
+          type="button"
+          class:list={[
+            'px-3.5 py-2 rounded-md text-sm font-medium transition-colors min-h-[44px] flex items-center gap-1.5 group',
+            pathname.includes('earn') || pathname.includes('pay') || pathname.includes('hourly') || pathname.includes('gas')
+              ? 'text-brand-600 dark:text-brand-400 font-semibold'
+              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/60'
+          ]}
+          aria-expanded="false"
+        >
+          <span>Guides</span>
+          <svg class="w-4 h-4 text-slate-400 group-hover:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <div class="absolute left-0 top-full hidden group-hover:block group-focus-within:block w-72 pt-2 shadow-lg rounded-xl z-50">
+          <div class="rounded-xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-800 dark:bg-slate-900">
+            {guideLinks.map((g) => (
+              <a
+                href={g.href}
+                class="block px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-brand-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-brand-400 transition-colors"
+              >
+                {g.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <a
+        href="/about/"
+        class:list={[
+          'px-3.5 py-2 rounded-md text-sm font-medium transition-colors min-h-[44px] flex items-center',
+          pathname === '/about/'
+            ? 'bg-slate-100 text-brand-600 dark:bg-slate-800 dark:text-brand-400 font-semibold'
+            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/60'
+        ]}
+      >
+        About
+      </a>
     </nav>
 
     <!-- Header Action Button (Calculator CTA) -->
@@ -70,28 +116,48 @@ const pathname = Astro.url.pathname;
   <!-- Mobile Dropdown Navigation -->
   <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-4 dark:border-slate-800 dark:bg-slate-900">
     <div class="flex flex-col space-y-1">
-      {SITE_CONFIG.navItems.map((item) => {
-        const isActive = pathname === item.href;
-        return (
-          <a
-            href={item.href}
-            class:list={[
-              'block rounded-md px-3 py-3 text-base font-medium min-h-[44px] flex items-center',
-              isActive
-                ? 'bg-slate-100 text-brand-600 dark:bg-slate-800 dark:text-brand-400 font-semibold'
-                : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
-            ]}
-          >
-            {item.label}
-          </a>
-        );
-      })}
-      <div class="pt-2">
+      <a
+        href="/"
+        class:list={[
+          'block rounded-md px-3 py-2.5 text-base font-medium min-h-[44px] flex items-center',
+          pathname === '/'
+            ? 'bg-slate-100 text-brand-600 dark:bg-slate-800 dark:text-brand-400 font-semibold'
+            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
+        ]}
+      >
+        Home
+      </a>
+
+      <div class="pt-2 pb-1 px-3 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+        Driver Guides
+      </div>
+      {guideLinks.map((g) => (
+        <a
+          href={g.href}
+          class="block rounded-md pl-6 pr-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+        >
+          {g.label}
+        </a>
+      ))}
+
+      <a
+        href="/about/"
+        class:list={[
+          'block rounded-md px-3 py-2.5 text-base font-medium min-h-[44px] flex items-center',
+          pathname === '/about/'
+            ? 'bg-slate-100 text-brand-600 dark:bg-slate-800 dark:text-brand-400 font-semibold'
+            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
+        ]}
+      >
+        About
+      </a>
+
+      <div class="pt-3">
         <a
           href="/tools/is-this-order-worth-it/"
           class="flex w-full items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-base font-semibold text-white shadow hover:bg-brand-600 min-h-[48px]"
         >
-          Check Order Profitability
+          Order Profit Calculator
         </a>
       </div>
     </div>

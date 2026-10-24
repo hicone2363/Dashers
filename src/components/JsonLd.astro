@@ -1,0 +1,127 @@
+---
+import { SITE_CONFIG } from '../data/config';
+
+export interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface Props {
+  type?: 'website' | 'article';
+  title?: string;
+  description?: string;
+  datePublished?: string;
+  dateModified?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  faqs?: FaqItem[];
+  canonicalUrl?: string;
+}
+
+const {
+  type = 'website',
+  title = SITE_CONFIG.siteTitle,
+  description = SITE_CONFIG.siteDescription,
+  datePublished = '2024-01-01',
+  dateModified = SITE_CONFIG.rates.ratesLastUpdated,
+  breadcrumbs = [],
+  faqs = [],
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+
+// Organization Schema
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_CONFIG.siteName,
+  url: SITE_CONFIG.siteUrl,
+  logo: `${SITE_CONFIG.siteUrl}/favicon.svg`,
+  description: SITE_CONFIG.siteDescription,
+  sameAs: []
+};
+
+// WebSite Schema
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_CONFIG.siteName,
+  url: SITE_CONFIG.siteUrl,
+  description: SITE_CONFIG.siteDescription,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_CONFIG.siteUrl}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string'
+  }
+};
+
+// BreadcrumbList Schema
+const breadcrumbsSchema = breadcrumbs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((crumb, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    name: crumb.name,
+    item: crumb.url.startsWith('http') ? crumb.url : `${SITE_CONFIG.siteUrl}${crumb.url}`
+  }))
+} : null;
+
+// Article Schema (for guides)
+const articleSchema = type === 'article' ? {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: description,
+  url: canonicalUrl,
+  datePublished: datePublished,
+  dateModified: dateModified,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl
+  },
+  author: {
+    '@type': 'Organization',
+    name: SITE_CONFIG.author.name,
+    url: `${SITE_CONFIG.siteUrl}${SITE_CONFIG.author.url}`
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE_CONFIG.siteName,
+    url: SITE_CONFIG.siteUrl,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_CONFIG.siteUrl}/favicon.svg`
+    }
+  }
+} : null;
+
+// FAQPage Schema
+const faqSchema = faqs && faqs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer
+    }
+  }))
+} : null;
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
+{breadcrumbsSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbsSchema)} />
+)}
+{articleSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+)}
+{faqSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+)}

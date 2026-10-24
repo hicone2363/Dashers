@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE_CONFIG } from '../data/config';
+
+const title = `Legal & Financial Disclaimer | ${SITE_CONFIG.siteName}`;
+const description = `Read the official disclaimer for ${SITE_CONFIG.siteName}. All tools, estimates, and guides are for informational purposes and do not constitute financial or tax advice.`;
+
+const breadcrumbs = [
+  { name: 'Disclaimer', url: '/disclaimer/' }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={Astro.url.href}
+  breadcrumbs={breadcrumbs}
+>
+  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+        Legal, Financial & Tax Disclaimer
+      </h1>
+      <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+        Effective Date: October 2026 &bull; Last Revised: {SITE_CONFIG.rates.ratesLastUpdated}
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none dark:prose-invert space-y-6 text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+      <!-- High visibility callout box -->
+      <div class="rounded-2xl border border-red-200 bg-red-50/70 p-6 dark:border-red-900 dark:bg-red-950/30">
+        <h2 class="text-lg font-bold text-red-900 dark:text-red-200 mb-2">
+          Strict Independence & Non-Affiliation
+        </h2>
+        <p class="text-sm text-red-800 dark:text-red-300">
+          <strong>{SITE_CONFIG.siteName} is a fully independent editorial and computational tool.</strong> We are NOT affiliated with, sponsored by, authorized by, endorsed by, or in any way officially connected with DoorDash, Inc., or any of its subsidiaries or affiliates. The official DoorDash website can be found at <a href="https://www.doordash.com" target="_blank" rel="noopener noreferrer" class="underline">https://www.doordash.com</a>.
+        </p>
+      </div>
+
+      <h2>Not Professional Financial, Tax, or Legal Advice</h2>
+      <p>
+        The content, calculations, estimates, guides, formulas, and verdict badges provided across {SITE_CONFIG.siteName} (including the "Is This Order Worth It?" calculator) are published exclusively for educational, general informational, and comparative entertainment purposes.
+      </p>
+      <p>
+        Nothing on this website constitutes professional financial advice, legal advice, tax advice, accounting advice, or formal employment guidance. Independent contractor status, tax deductions, vehicle depreciation schedules, and business profit/loss accounting are governed by federal, state, and local laws.
+      </p>
+
+      <h2>Estimates and Calculation Limitations</h2>
+      <p>
+        Calculators on this website use user-supplied figures alongside historical benchmark averages (such as fuel pricing and estimated wear-and-tear per mile). Because automotive operating conditions vary greatly by vehicle age, driving behavior, terrain, maintenance quality, and regional fuel prices, actual expenses will vary. We make no representations or warranties regarding the mathematical certainty or profitability outcomes of accepting or rejecting specific delivery orders.
+      </p>
+
+      <h2>Verification of Tax Guidelines</h2>
+      <p>
+        Tax rules regarding mileage and business expense write-offs change annually. Couriers must verify standard business mileage deduction rates directly with the Internal Revenue Service (<a href="https://www.irs.gov/tax-professionals/standard-mileage-rates" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">IRS.gov</a>) or consult a certified CPA or tax professional before submitting tax returns.
+      </p>
+
+      <h2>Trademarks and Intellectual Property</h2>
+      <p>
+        "DoorDash", "Dasher", and related service names, trademarks, and registered marks are the intellectual property of DoorDash, Inc. Any use of these trademarks on this website is for nominative, editorial, and comparative purposes only under the principles of fair use.
+      </p>
+
+      <h2>Limitation of Liability</h2>
+      <p>
+        Under no circumstances shall {SITE_CONFIG.siteName}, its creators, authors, or operators be liable for any direct, indirect, incidental, consequential, or punitive damages resulting from your use of, or inability to use, the information and tools provided on this website.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

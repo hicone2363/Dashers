@@ -1,0 +1,39 @@
+---
+export interface SourceItem {
+  name: string;
+  url: string;
+  note?: string;
+}
+
+export interface Props {
+  sources: SourceItem[];
+}
+
+const { sources } = Astro.props;
+---
+
+{sources && sources.length > 0 && (
+  <section class="my-8 rounded-xl border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-900/40 text-xs">
+    <h3 class="font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+      <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      Official Sources & Citations
+    </h3>
+    <ul class="space-y-1.5 list-disc pl-4 text-slate-600 dark:text-slate-400">
+      {sources.map((source) => (
+        <li>
+          <a
+            href={source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-brand-600 dark:text-brand-400 hover:underline font-semibold"
+          >
+            {source.name}
+          </a>
+          {source.note && <span class="ml-1 text-slate-500">({source.note})</span>}
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

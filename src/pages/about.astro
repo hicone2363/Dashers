@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE_CONFIG } from '../data/config';
+
+const title = `About ${SITE_CONFIG.siteName} | Independent Courier Economics`;
+const description = `Learn about ${SITE_CONFIG.siteName}'s mission to bring financial transparency to DoorDash drivers and independent gig couriers.`;
+
+const breadcrumbs = [
+  { name: 'About', url: '/about/' }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={Astro.url.href}
+  breadcrumbs={breadcrumbs}
+>
+  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+        About {SITE_CONFIG.siteName}
+      </h1>
+      <p class="mt-2 text-lg text-slate-600 dark:text-slate-300">
+        Transparent mathematics, vehicle operating expense analysis, and independent research for gig couriers.
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none dark:prose-invert space-y-6 text-slate-700 dark:text-slate-300">
+      <div class="rounded-xl border-l-4 border-amber-500 bg-amber-50 p-4 dark:bg-amber-950/30 text-sm">
+        <p class="font-bold text-amber-800 dark:text-amber-300">
+          Independent Publisher Notice
+        </p>
+        <p class="text-amber-700 dark:text-amber-400">
+          {SITE_CONFIG.disclaimer}
+        </p>
+      </div>
+
+      <h2>Our Mission</h2>
+      <p>
+        Millions of independent couriers in the United States rely on food delivery platforms like DoorDash to earn a living or supplement their income. However, delivery dispatch apps display gross offer figures while silently shifting all fuel, depreciation, insurance, and vehicle maintenance liabilities onto drivers.
+      </p>
+      <p>
+        {SITE_CONFIG.siteName} was founded to equalize this information imbalance. We build zero-latency calculators and data-backed guides designed to help Dashers make informed financial decisions in seconds.
+      </p>
+
+      <h2>Who Runs {SITE_CONFIG.siteName}?</h2>
+      <p>
+        This site is created and operated by independent delivery economics researchers and active gig couriers. We are not a corporate think tank or venture-backed entity. We are couriers who track real-world driving expenses, calculate automotive depreciation, and advocate for transparent contractor pay.
+      </p>
+
+      <h2>Our Principles</h2>
+      <ul>
+        <li><strong>Zero Speculation:</strong> We base calculations on verifiable vehicular data, real-time gas economics, and official IRS standard mileage guidelines.</li>
+        <li><strong>Privacy-First & Anonymous:</strong> We do not track personal driving logs or require account creation. All calculations occur inside your browser.</li>
+        <li><strong>Extreme Performance:</strong> Drivers need instant answers while waiting in parking lots on mobile devices. Our static site loads in milliseconds with zero layout shift.</li>
+      </ul>
+
+      <h2>Editorial Independence</h2>
+      <p>
+        We do not accept sponsored pay rankings or allow delivery apps to dictate our conclusions. When an offer or mode is unprofitable, our tools clearly display "Skip It".
+      </p>
+      <p>
+        For questions or feedback, visit our <a href="/contact/" class="text-brand-600 font-semibold underline">Contact page</a> or read our <a href="/editorial-policy/" class="text-brand-600 font-semibold underline">Editorial Policy</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

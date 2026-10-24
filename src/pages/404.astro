@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../data/config';
+
+const title = `Page Not Found (404) | ${SITE_CONFIG.siteName}`;
+const description = "The requested DasherMath guide or tool page could not be located. Browse our top delivery calculators and driver pay breakdowns.";
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  noindex={true}
+>
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 text-center">
+    <div class="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-100 text-brand-600 dark:bg-brand-950 dark:text-brand-400 font-black text-2xl mb-4">
+      404
+    </div>
+    
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+      Route Not Found
+    </h1>
+
+    <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+      Looks like this delivery was marked completed or rerouted to a dead-end. Let's get you back on profitable roads:
+    </p>
+
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a
+        href="/"
+        class="inline-flex items-center justify-center rounded-xl bg-brand-500 px-5 py-3 text-sm font-bold text-white shadow hover:bg-brand-600 transition-colors min-h-[44px]"
+      >
+        &larr; Back to Home
+      </a>
+      <a
+        href="/tools/is-this-order-worth-it/"
+        class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-800 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 transition-colors min-h-[44px]"
+      >
+        Order Profit Calculator
+      </a>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 text-left">
+      <p class="text-xs uppercase font-bold tracking-wider text-slate-400 mb-3 text-center">
+        Popular Driver Guides
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        <a href="/earn-by-time-doordash/" class="p-3 rounded-lg border border-slate-200 bg-white hover:border-brand-500 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-400 font-medium">
+          &rarr; Earn by Time DoorDash Guide
+        </a>
+        <a href="/doordash-pay-per-delivery/" class="p-3 rounded-lg border border-slate-200 bg-white hover:border-brand-500 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-400 font-medium">
+          &rarr; Pay Per Delivery Explained
+        </a>
+        <a href="/does-doordash-pay-hourly/" class="p-3 rounded-lg border border-slate-200 bg-white hover:border-brand-500 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-400 font-medium">
+          &rarr; Does DoorDash Pay Hourly?
+        </a>
+        <a href="/does-doordash-pay-for-gas/" class="p-3 rounded-lg border border-slate-200 bg-white hover:border-brand-500 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-400 font-medium">
+          &rarr; Does DoorDash Pay For Gas?
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

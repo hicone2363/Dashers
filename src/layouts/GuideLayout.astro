@@ -1,0 +1,151 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TableOfContents, { type HeadingItem } from '../components/TableOfContents.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import SourcesList, { type SourceItem } from '../components/SourcesList.astro';
+import RelatedGuides from '../components/RelatedGuides.astro';
+import AdSlot from '../components/AdSlot.astro';
+import OrderCalculator from '../components/OrderCalculator.astro';
+import { SITE_CONFIG } from '../data/config';
+
+export interface Props {
+  title: string;
+  description: string;
+  mainKeyword: string;
+  secondaryKeywords?: string[];
+  updated: string;
+  directAnswer: string;
+  headings?: HeadingItem[];
+  faq?: Array<{ question: string; answer: string }>;
+  sources?: SourceItem[];
+  embedCalculator?: boolean;
+}
+
+const {
+  title,
+  description,
+  mainKeyword,
+  secondaryKeywords = [],
+  updated,
+  directAnswer,
+  headings = [],
+  faq = [],
+  sources = [],
+  embedCalculator = false,
+} = Astro.props;
+
+const canonicalUrl = Astro.url.href;
+
+const breadcrumbs = [
+  { name: 'Guides', url: '/' },
+  { name: mainKeyword, url: Astro.url.pathname }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+  type="article"
+  publishedTime="2024-01-15"
+  modifiedTime={updated}
+  breadcrumbs={breadcrumbs}
+  faqs={faq}
+>
+  <article class="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
+    <!-- Breadcrumb trail -->
+    <Breadcrumbs items={breadcrumbs} />
+
+    <!-- Article Header -->
+    <header class="mb-8">
+      <!-- Top Primary Keyword H1 -->
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+        {mainKeyword}
+      </h1>
+
+      <p class="mt-3 text-lg text-slate-600 dark:text-slate-300">
+        {description}
+      </p>
+
+      <!-- Author Box & Last Updated Meta -->
+      <div class="mt-5 flex flex-wrap items-center justify-between gap-4 border-y border-slate-200 py-3 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-3">
+          <div class="h-9 w-9 rounded-full bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300 flex items-center justify-center font-bold text-sm">
+            DM
+          </div>
+          <div>
+            <div class="font-semibold text-slate-900 dark:text-slate-200">
+              <a href={SITE_CONFIG.author.url} class="hover:text-brand-600 transition-colors">
+                {SITE_CONFIG.author.name}
+              </a>
+            </div>
+            <div>{SITE_CONFIG.author.role}</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>Last Updated: <time datetime={updated} class="font-semibold text-slate-700 dark:text-slate-300">{updated}</time></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- FEATURED SNIPPET DIRECT ANSWER BOX -->
+    {directAnswer && (
+      <section
+        class="mb-8 rounded-2xl border-l-4 border-brand-500 bg-brand-50/50 p-5 sm:p-6 dark:border-brand-500 dark:bg-brand-950/20"
+        aria-label="Direct Summary"
+      >
+        <div class="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-brand-700 dark:text-brand-400 mb-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+          <span>Direct Answer / Quick Takeaway</span>
+        </div>
+        <p class="text-base sm:text-lg font-medium text-slate-800 dark:text-slate-100 leading-relaxed">
+          {directAnswer}
+        </p>
+      </section>
+    )}
+
+    <!-- Top Ad Slot (Fixed height to prevent CLS) -->
+    <AdSlot slotType="leaderboard" slotId="guide-top-leaderboard" />
+
+    <!-- Optional Embedded Calculator -->
+    {embedCalculator && (
+      <div class="my-8">
+        <OrderCalculator instanceId="guide-embedded-calculator" />
+      </div>
+    )}
+
+    <!-- Table of Contents -->
+    {headings && headings.length > 0 && <TableOfContents headings={headings} />}
+
+    <!-- Main Guide Content (Markdown Slot) -->
+    <div class="prose prose-slate max-w-none dark:prose-invert prose-headings:font-bold prose-headings:tracking-tight prose-a:text-brand-600 dark:prose-a:text-brand-400 prose-p:leading-relaxed prose-img:rounded-xl">
+      <slot />
+    </div>
+
+    <!-- Mid-Content Ad Slot -->
+    <AdSlot slotType="inlineRectangle" slotId="guide-mid-rectangle" />
+
+    <!-- FAQ Accordion -->
+    {faq && faq.length > 0 && <FaqAccordion faqs={faq} />}
+
+    <!-- Official Sources & References -->
+    {sources && sources.length > 0 && <SourcesList sources={sources} />}
+
+    <!-- Related Guides Block -->
+    <RelatedGuides />
+
+    <!-- Bottom Independent Disclaimer Line -->
+    <div class="mt-8 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+      <p>
+        <strong>Disclaimer:</strong> {SITE_CONFIG.disclaimer} Always verify DoorDash app terms and local market pay models directly inside your Dasher driver app.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

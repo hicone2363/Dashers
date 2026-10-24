@@ -1,0 +1,64 @@
+---
+export interface GuideLink {
+  title: string;
+  url: string;
+  description: string;
+}
+
+export interface Props {
+  guides?: GuideLink[];
+}
+
+const defaultGuides: GuideLink[] = [
+  {
+    title: "Is This Order Worth It? Live Calculator",
+    url: "/tools/is-this-order-worth-it/",
+    description: "Calculate exact net profit per hour and pay per mile for any DoorDash offer."
+  },
+  {
+    title: "Earn by Time DoorDash: Pay Structure & Reality",
+    url: "/earn-by-time-doordash/",
+    description: "How active-time pay works compared to per-offer delivery mode."
+  },
+  {
+    title: "DoorDash Pay Per Delivery Explained",
+    url: "/doordash-pay-per-delivery/",
+    description: "Breakdown of base pay, customer tips, and peak pay incentives."
+  },
+  {
+    title: "Does DoorDash Pay Hourly?",
+    url: "/does-doordash-pay-hourly/",
+    description: "Active time versus total shift duration: what drivers actually get paid."
+  },
+  {
+    title: "Does DoorDash Pay For Gas?",
+    url: "/does-doordash-pay-for-gas/",
+    description: "Fuel reimbursements, tax mileage deductions, and true gas expense calculations."
+  }
+];
+
+const currentPath = Astro.url.pathname;
+const { guides = defaultGuides } = Astro.props;
+const displayGuides = guides.filter(g => g.url !== currentPath).slice(0, 3);
+---
+
+<section class="my-10 border-t border-slate-200 dark:border-slate-800 pt-8">
+  <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+    Related Guides & Calculators
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    {displayGuides.map((guide) => (
+      <a
+        href={guide.url}
+        class="group block p-4 rounded-xl border border-slate-200 bg-white hover:border-brand-500 hover:shadow-sm dark:border-slate-800 dark:bg-slate-900/60 dark:hover:border-brand-400 transition-all"
+      >
+        <span class="block text-sm font-bold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-400 mb-1">
+          {guide.title} &rarr;
+        </span>
+        <span class="block text-xs text-slate-600 dark:text-slate-400 line-clamp-2">
+          {guide.description}
+        </span>
+      </a>
+    ))}
+  </div>
+</section>

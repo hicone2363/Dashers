@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrderCalculator from '../components/OrderCalculator.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { SITE_CONFIG } from '../data/config';
+
+const title = `${SITE_CONFIG.siteName} | Real DoorDash Driver Pay & Profit Calculators`;
+const description = "Independent calculators and data-driven guides for DoorDash drivers. Calculate real net pay, gas costs, vehicle depreciation, and order profitability.";
+
+const guides = [
+  {
+    title: "Earn by Time DoorDash: Complete Breakdown",
+    url: "/earn-by-time-doordash/",
+    tag: "Pay Models",
+    description: "How active hourly pay works, tip transparency, declining limits, and whether Earn by Time beats Earn per Offer in your market."
+  },
+  {
+    title: "DoorDash Pay Per Delivery Explained",
+    url: "/doordash-pay-per-delivery/",
+    tag: "Compensation",
+    description: "Understand the three components of DoorDash pay: base pay algorithms, customer tipping habits, and peak pay incentives."
+  },
+  {
+    title: "Does DoorDash Pay Hourly?",
+    url: "/does-doordash-pay-hourly/",
+    tag: "Earnings",
+    description: "Active delivery minutes vs. total dash shift time: the real math behind hourly claims and local legal wage guarantees."
+  },
+  {
+    title: "Does DoorDash Pay For Gas?",
+    url: "/does-doordash-pay-for-gas/",
+    tag: "Vehicle Expenses",
+    description: "How fuel costs eat into courier pay, IRS mileage deductions, and how to protect your net profit at the gas pump."
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={SITE_CONFIG.siteUrl}
+  type="website"
+>
+  <!-- HERO SECTION -->
+  <section class="border-b border-slate-200 bg-gradient-to-b from-white to-slate-50 py-12 px-4 sm:px-6 sm:py-16 dark:border-slate-800 dark:from-slate-900 dark:to-slate-950">
+    <div class="mx-auto max-w-5xl text-center">
+      <div class="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-brand-700 dark:border-brand-800 dark:bg-brand-950/60 dark:text-brand-300 mb-5">
+        <span class="inline-block w-2 h-2 rounded-full bg-brand-500"></span>
+        Built for US Delivery Couriers
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.12]">
+        Stop Guessing. <br class="hidden sm:inline" />
+        Know Your <span class="text-brand-600 dark:text-brand-400">Real Net Profit</span> on Every Dash.
+      </h1>
+
+      <p class="mx-auto mt-5 max-w-2xl text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
+        DoorDash displays gross payouts. {SITE_CONFIG.siteName} computes your real net earnings after factoring in gas burned, vehicle wear, and deadhead return mileage.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/tools/is-this-order-worth-it/"
+          class="rounded-xl bg-brand-500 px-6 py-3.5 text-base font-bold text-white shadow-md hover:bg-brand-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 transition-all min-h-[48px] inline-flex items-center gap-2"
+        >
+          <span>Calculate Order Profit</span>
+          <span>&rarr;</span>
+        </a>
+        <a
+          href="/earn-by-time-doordash/"
+          class="rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-base font-bold text-slate-800 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 transition-all min-h-[48px] inline-flex items-center"
+        >
+          Earn By Time Guide
+        </a>
+      </div>
+
+      <!-- Quick Trust Indicators -->
+      <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
+        <div class="p-3 rounded-xl bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+          <span class="block text-xs text-slate-500 dark:text-slate-400">IRS Mileage Benchmark</span>
+          <span class="text-base font-extrabold text-slate-900 dark:text-white">${SITE_CONFIG.rates.irsStandardMileageRate}/mi</span>
+        </div>
+        <div class="p-3 rounded-xl bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+          <span class="block text-xs text-slate-500 dark:text-slate-400">Speed</span>
+          <span class="text-base font-extrabold text-slate-900 dark:text-white">Instant / 0 Latency</span>
+        </div>
+        <div class="p-3 rounded-xl bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+          <span class="block text-xs text-slate-500 dark:text-slate-400">Calculator Privacy</span>
+          <span class="text-base font-extrabold text-slate-900 dark:text-white">Local In-Browser</span>
+        </div>
+        <div class="p-3 rounded-xl bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800">
+          <span class="block text-xs text-slate-500 dark:text-slate-400">Affiliation</span>
+          <span class="text-base font-extrabold text-slate-900 dark:text-white">100% Independent</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERBOARD AD SLOT -->
+  <AdSlot slotType="leaderboard" slotId="home-top-leaderboard" />
+
+  <!-- INTERACTIVE TOOL SHOWCASE -->
+  <section class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+        Quick Decision Calculator
+      </h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+        Got an offer on your screen? Plug in the numbers to evaluate it right now:
+      </p>
+    </div>
+
+    <OrderCalculator instanceId="home-calculator" />
+  </section>
+
+  <!-- MID AD SLOT -->
+  <AdSlot slotType="inlineRectangle" slotId="home-mid-rectangle" />
+
+  <!-- FEATURED GUIDES SECTION -->
+  <section class="border-t border-slate-200 bg-white py-12 px-4 sm:px-6 dark:border-slate-800 dark:bg-slate-900">
+    <div class="mx-auto max-w-5xl">
+      <div class="flex flex-wrap items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+            Courier Knowledge Base
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+            Essential DoorDash Pay Guides
+          </h2>
+        </div>
+        <a href="/earn-by-time-doordash/" class="text-sm font-bold text-brand-600 dark:text-brand-400 hover:underline">
+          View all guides &rarr;
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {guides.map((item) => (
+          <article class="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-6 hover:border-brand-500 hover:shadow-md transition-all dark:border-slate-800 dark:bg-slate-800/40 dark:hover:border-brand-400">
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300 mb-3">
+                {item.tag}
+              </span>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                <a href={item.url} class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+                  {item.title}
+                </a>
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                {item.description}
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-200/80 dark:border-slate-700/60">
+              <a
+                href={item.url}
+                class="inline-flex items-center text-sm font-bold text-brand-600 dark:text-brand-400 hover:underline"
+              >
+                Read Guide &rarr;
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE PROPOSITION / E-E-A-T SECTION -->
+  <section class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+    <div class="rounded-2xl bg-slate-900 p-8 sm:p-10 text-white dark:bg-slate-950 border border-slate-800">
+      <div class="max-w-2xl">
+        <h2 class="text-2xl sm:text-3xl font-black tracking-tight">
+          Why We Built {SITE_CONFIG.siteName}
+        </h2>
+        <p class="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          Gig delivery apps are designed around gamification and gross earnings totals. They tell you that you made $25/hour, but omit the $6 in gas you burned, the 30 miles of tire and engine wear, and the unpaid drive back from the middle of nowhere.
+        </p>
+        <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
+          {SITE_CONFIG.siteName} provides cold, transparent mathematics so couriers make smarter acceptance decisions, reduce vehicle depreciation, and maximize actual take-home income.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

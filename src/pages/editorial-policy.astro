@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE_CONFIG } from '../data/config';
+
+const title = `Editorial Policy & Standards | ${SITE_CONFIG.siteName}`;
+const description = `Read our strict editorial standards, fact-checking methodology, and rate verification processes at ${SITE_CONFIG.siteName}.`;
+
+const breadcrumbs = [
+  { name: 'Editorial Policy', url: '/editorial-policy/' }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={Astro.url.href}
+  breadcrumbs={breadcrumbs}
+>
+  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+        Editorial Policy & Content Standards
+      </h1>
+      <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+        Committed to accuracy, independent analysis, and courier advocacy.
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none dark:prose-invert space-y-6 text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+      <h2>1. Purpose and Independence</h2>
+      <p>
+        {SITE_CONFIG.siteName} exists to provide transparent, unbiased computational tools and educational content for US independent delivery drivers. We operate without editorial influence from delivery platforms, gig conglomerates, or automotive sponsors.
+      </p>
+
+      <h2>2. Rigorous Fact-Checking & Source Standards</h2>
+      <p>
+        Delivery algorithms and compensation structures change frequently. To prevent misinformation, our editorial team adheres to the following principles:
+      </p>
+      <ul>
+        <li><strong>Government Benchmark Verification:</strong> Federal mileage numbers are referenced directly to official Internal Revenue Service publications at <a href="https://www.irs.gov" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">IRS.gov</a>.</li>
+        <li><strong>Clear Factual Flagging:</strong> Whenever an app policy, tip threshold, or algorithm update is subject to market testing or unconfirmed policy shifts, we clearly tag it for verification rather than stating speculation as fact.</li>
+        <li><strong>Direct Quotations & Disclosures:</strong> Terms of Service changes are linked to official platform help articles.</li>
+      </ul>
+
+      <h2>3. Methodology Behind Calculator Formulas</h2>
+      <p>
+        All formulas implemented on {SITE_CONFIG.siteName} are open and documented. We do not use "black box" math. The exact calculations for fuel burn, depreciation, wear-and-tear, and net hourly rates are openly displayed on our tool pages for inspection.
+      </p>
+
+      <h2>4. Monetization & Affiliate Disclosure</h2>
+      <p>
+        To maintain this platform as a free resource for drivers, we may display display advertising or include affiliate links to relevant tools (such as mileage tracking apps, dashcams, or tax preparation software).
+      </p>
+      <ul>
+        <li>Affiliate relationships never influence our mathematical calculations or order recommendations.</li>
+        <li>We clearly label advertisement slots with reserved dimensions to ensure smooth browsing without disruptive layout shifts (CLS).</li>
+      </ul>
+
+      <h2>5. Corrections and Feedback</h2>
+      <p>
+        If you spot an outdated figure, algorithm update, or broken formula, please contact our research team at <a href={`mailto:${SITE_CONFIG.contactEmail}`} class="text-brand-600 underline">{SITE_CONFIG.contactEmail}</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

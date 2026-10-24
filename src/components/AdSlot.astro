@@ -1,0 +1,54 @@
+---
+export interface Props {
+  slotType?: 'leaderboard' | 'inlineRectangle' | 'mobileBanner';
+  slotId?: string;
+  className?: string;
+}
+
+const { slotType = 'inlineRectangle', slotId = 'ad-slot', className = '' } = Astro.props;
+
+// Fixed dimensions prevent Cumulative Layout Shift (CLS)
+const dimensions = {
+  leaderboard: {
+    wrapperClass: 'min-h-[90px] w-full max-w-[728px]',
+    heightClass: 'h-[90px]',
+    label: '728x90 Leaderboard Slot',
+  },
+  inlineRectangle: {
+    wrapperClass: 'min-h-[250px] w-full max-w-[300px]',
+    heightClass: 'h-[250px]',
+    label: '300x250 Medium Rectangle Slot',
+  },
+  mobileBanner: {
+    wrapperClass: 'min-h-[100px] w-full max-w-[320px]',
+    heightClass: 'h-[100px]',
+    label: '320x100 Mobile Banner Slot',
+  },
+}[slotType];
+---
+
+<aside
+  class:list={[
+    'my-6 mx-auto flex flex-col items-center justify-center overflow-hidden rounded-md border border-dashed border-slate-300 bg-slate-50/50 p-2 dark:border-slate-800 dark:bg-slate-900/40 text-center',
+    dimensions.wrapperClass,
+    className
+  ]}
+  aria-label="Advertisement Placeholder"
+>
+  <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 mb-1">
+    Advertisement
+  </span>
+  <div
+    id={slotId}
+    class:list={[
+      'flex w-full items-center justify-center text-xs text-slate-400 dark:text-slate-600',
+      dimensions.heightClass
+    ]}
+  >
+    <!-- Ad container reserved for display network (Google AdSense / Mediavine / Raptive) without layout shift -->
+    <span class="sr-only">Reserved ad space</span>
+    <span aria-hidden="true" class="text-[11px] select-none text-slate-400/80">
+      Reserved Ad Space ({dimensions.label})
+    </span>
+  </div>
+</aside>

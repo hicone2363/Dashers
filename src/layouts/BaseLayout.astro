@@ -1,0 +1,73 @@
+---
+import SEO from '../components/SEO.astro';
+import JsonLd, { type BreadcrumbItem, type FaqItem } from '../components/JsonLd.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  faqs?: FaqItem[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonicalUrl,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  breadcrumbs,
+  faqs,
+  noindex,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <SEO
+      title={title}
+      description={description}
+      canonicalUrl={canonicalUrl}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      noindex={noindex}
+    />
+    <JsonLd
+      type={type}
+      title={title}
+      description={description}
+      datePublished={publishedTime}
+      dateModified={modifiedTime}
+      breadcrumbs={breadcrumbs}
+      faqs={faqs}
+      canonicalUrl={canonicalUrl}
+    />
+  </head>
+  <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100 font-sans text-base">
+    <!-- Skip to main content for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 rounded-md bg-brand-600 px-4 py-2 text-white font-semibold shadow-lg focus:outline-none"
+    >
+      Skip to content
+    </a>
+
+    <Header />
+
+    <main id="main-content" class="flex-grow w-full">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

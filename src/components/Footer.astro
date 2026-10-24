@@ -1,0 +1,114 @@
+---
+import { SITE_CONFIG } from '../data/config';
+---
+
+<footer class="mt-auto border-t border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950 text-slate-600 dark:text-slate-400">
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <!-- Col 1: About & Independent Statement -->
+      <div class="md:col-span-2">
+        <a href="/" class="flex items-center gap-2 font-bold text-lg text-slate-900 dark:text-white mb-2">
+          <span class="inline-flex h-7 w-7 items-center justify-center rounded bg-brand-500 text-white font-bold text-sm">
+            DM
+          </span>
+          {SITE_CONFIG.siteName}
+        </a>
+        <p class="text-sm leading-relaxed mb-3">
+          Independent calculation tools and financial breakdowns for gig couriers and US DoorDash drivers.
+          Designed to illuminate vehicle operating costs, real hourly net pay, and order selection strategies.
+        </p>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-300 font-medium">
+          <svg class="w-4 h-4 shrink-0 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          <span>100% Independent. Not affiliated with or endorsed by DoorDash, Inc.</span>
+        </div>
+      </div>
+
+      <!-- Col 2: Top Guides & Tools -->
+      <div>
+        <p class="font-semibold text-sm uppercase tracking-wider text-slate-900 dark:text-white mb-3">
+          Top Driver Guides
+        </p>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/tools/is-this-order-worth-it/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              Order Profitability Calculator
+            </a>
+          </li>
+          <li>
+            <a href="/earn-by-time-doordash/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              Earn by Time Guide
+            </a>
+          </li>
+          <li>
+            <a href="/doordash-pay-per-delivery/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              Pay Per Delivery Explained
+            </a>
+          </li>
+          <li>
+            <a href="/does-doordash-pay-hourly/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              Does DoorDash Pay Hourly?
+            </a>
+          </li>
+          <li>
+            <a href="/does-doordash-pay-for-gas/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">
+              Does DoorDash Pay For Gas?
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Trust & Regulatory Pages -->
+      <div>
+        <p class="font-semibold text-sm uppercase tracking-wider text-slate-900 dark:text-white mb-3">
+          Editorial & Compliance
+        </p>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/about/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">About Us</a>
+          </li>
+          <li>
+            <a href="/editorial-policy/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Editorial Policy</a>
+          </li>
+          <li>
+            <a href="/disclaimer/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Legal & Financial Disclaimer</a>
+          </li>
+          <li>
+            <a href="/privacy-policy/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="/contact/" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Contact & Feedback</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Rate Reference Callout -->
+    <div class="border-t border-slate-200 dark:border-slate-800 pt-6 pb-4 text-xs leading-relaxed space-y-2 text-slate-500 dark:text-slate-400">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <span class="font-semibold text-slate-700 dark:text-slate-300">IRS Mileage Benchmark:</span>
+        <span>
+          ${SITE_CONFIG.rates.irsStandardMileageRate}/mile ({SITE_CONFIG.rates.irsMileageRateYear} Jul 1–Dec 31 rate; ${SITE_CONFIG.rates.irsStandardMileageRateJanToJun}/mile Jan 1–Jun 30).
+        </span>
+        <a
+          href={SITE_CONFIG.rates.irsMileageRateSource}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-brand-600 dark:text-brand-400 underline hover:no-underline font-medium"
+        >
+          Verify at IRS.gov &rarr;
+        </a>
+        <span class="text-slate-400">(Site data verified: {SITE_CONFIG.rates.ratesLastUpdated})</span>
+      </div>
+
+      <!-- Comprehensive Disclaimer Statement -->
+      <p>
+        <strong>Legal & Financial Notice:</strong> {SITE_CONFIG.disclaimer} All DoorDash product names, trademarks, and logos are property of DoorDash, Inc. Earnings vary significantly based on vehicle choice, gas costs, market location, weather, and active hours.
+      </p>
+      <p class="text-slate-400 dark:text-slate-500">
+        &copy; {new Date().getFullYear()} {SITE_CONFIG.siteName}. All rights reserved. Built with performance, accessibility, and zero-shift layout engineering.
+      </p>
+    </div>
+  </div>
+</footer>

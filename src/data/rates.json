@@ -1,0 +1,30 @@
+{
+  "_comment": "TODO: Verify current IRS standard mileage rate at IRS.gov (https://www.irs.gov/tax-professionals/standard-mileage-rates) before filing or making tax deductions. REVIEW LOCAL RATES: Seattle in January, NYC in April.",
+  "irsMileageRateYear": 2026,
+  "irsStandardMileageRate": 0.76,
+  "irsStandardMileageRateJanToJun": 0.725,
+  "irsMileageRateSource": "https://www.irs.gov/tax-professionals/standard-mileage-rates",
+  "ratesLastUpdated": "2026-10-24",
+  "defaultFuelPricePerGallon": 3.45,
+  "defaultVehicleMpg": 26,
+  "defaultMaintenanceDepreciationPerMile": 0.15,
+  "thresholds": {
+    "worthItMinHourly": 20.00,
+    "borderlineMinHourly": 12.00
+  },
+  "localMinimums": {
+    "nyc": {
+      "perHour": 22.13,
+      "effective": "2026-04-01",
+      "excludesTips": true,
+      "source": "https://www.nyc.gov/site/dca/workers/Delivery-Worker-Public-Hearing-Minimum-Pay-Rate.page"
+    },
+    "seattle": {
+      "perMinute": 0.47,
+      "perMile": 0.80,
+      "perOffer": 5.34,
+      "effective": "2026-01-01",
+      "source": "https://seattle.gov/laborstandards/ordinances/app-based-worker-ordinances/app-based-worker-minimum-payment-ordinance"
+    }
+  }
+}

@@ -1,0 +1,466 @@
+---
+import { SITE_CONFIG } from '../data/config';
+
+export interface Props {
+  instanceId?: string;
+  defaultPay?: number;
+  defaultMiles?: number;
+  defaultMinutes?: number;
+  compact?: boolean;
+}
+
+const {
+  instanceId = 'order-calc-primary',
+  defaultPay = 8.50,
+  defaultMiles = 4.2,
+  defaultMinutes = 20,
+  compact = false,
+} = Astro.props;
+
+const rates = SITE_CONFIG.rates;
+---
+
+<div
+  class:list={[
+    'order-calculator-root rounded-2xl border border-slate-200 bg-white p-5 sm:p-7 shadow-sm dark:border-slate-800 dark:bg-slate-900',
+    compact ? 'max-w-2xl mx-auto' : 'w-full'
+  ]}
+  data-calculator-root={instanceId}
+  data-default-gas={rates.defaultFuelPricePerGallon}
+  data-default-mpg={rates.defaultVehicleMpg}
+  data-default-maint={rates.defaultMaintenanceDepreciationPerMile}
+  data-threshold-worth={rates.thresholds.worthItMinHourly}
+  data-threshold-border={rates.thresholds.borderlineMinHourly}
+>
+  <!-- Calculator Header -->
+  <div class="border-b border-slate-100 pb-4 mb-6 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+        <span>🚗</span>
+        <span>Is This Order Worth It?</span>
+      </h2>
+      <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+        Real-time DoorDash profit breakdown. Computes fuel, wear-and-tear, and true net hourly earnings.
+      </p>
+    </div>
+    <div class="flex items-center gap-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      Live Calculation
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- INPUTS FORM (Left Column on desktop) -->
+    <div class="lg:col-span-7 space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <!-- Offered Pay -->
+        <div>
+          <label for={`${instanceId}-pay`} class="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+            Offered Pay ($)
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 font-bold">$</span>
+            <input
+              type="number"
+              id={`${instanceId}-pay`}
+              data-field="pay"
+              step="0.25"
+              min="0"
+              value={defaultPay.toFixed(2)}
+              class="calc-input block w-full rounded-xl border border-slate-300 bg-white pl-8 pr-3 py-3 text-base font-semibold text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white min-h-[48px]"
+              inputmode="decimal"
+              placeholder="e.g. 8.50"
+            />
+          </div>
+        </div>
+
+        <!-- Total Miles -->
+        <div>
+          <label for={`${instanceId}-miles`} class="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+            Total Miles
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id={`${instanceId}-miles`}
+              data-field="miles"
+              step="0.1"
+              min="0.1"
+              value={defaultMiles.toFixed(1)}
+              class="calc-input block w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-base font-semibold text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white min-h-[48px]"
+              inputmode="decimal"
+              placeholder="e.g. 4.2"
+            />
+            <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs font-semibold text-slate-400">mi</span>
+          </div>
+        </div>
+
+        <!-- Estimated Minutes -->
+        <div>
+          <label for={`${instanceId}-minutes`} class="block text-sm font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+            Est. Minutes
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id={`${instanceId}-minutes`}
+              data-field="minutes"
+              step="1"
+              min="1"
+              value={defaultMinutes}
+              class="calc-input block w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-base font-semibold text-slate-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white min-h-[48px]"
+              inputmode="numeric"
+              placeholder="e.g. 20"
+            />
+            <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs font-semibold text-slate-400">min</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehicle & Operating Costs -->
+      <div class="rounded-xl bg-slate-50 p-4 border border-slate-200/80 dark:bg-slate-800/50 dark:border-slate-700/60 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            Vehicle Cost Settings <span class="font-normal text-[11px] text-slate-400">(Estimates as of {rates.ratesLastUpdated}; customize for your car)</span>
+          </span>
+          <button
+            type="button"
+            class="calc-reset-btn text-xs text-brand-600 dark:text-brand-400 hover:underline font-semibold"
+          >
+            Reset Defaults
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- MPG -->
+          <div>
+            <label for={`${instanceId}-mpg`} class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Fuel MPG
+            </label>
+            <input
+              type="number"
+              id={`${instanceId}-mpg`}
+              data-field="mpg"
+              step="1"
+              min="5"
+              value={rates.defaultVehicleMpg}
+              class="calc-input block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-900 focus:border-brand-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white min-h-[44px]"
+              inputmode="decimal"
+            />
+          </div>
+
+          <!-- Gas Price -->
+          <div>
+            <label for={`${instanceId}-gas`} class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Gas Price ($/gal)
+            </label>
+            <input
+              type="number"
+              id={`${instanceId}-gas`}
+              data-field="gas"
+              step="0.05"
+              min="0"
+              value={rates.defaultFuelPricePerGallon.toFixed(2)}
+              class="calc-input block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-900 focus:border-brand-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white min-h-[44px]"
+              inputmode="decimal"
+            />
+          </div>
+
+          <!-- Maintenance / Depreciation override -->
+          <div>
+            <label for={`${instanceId}-maint`} class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Wear/Maint ($/mi)
+            </label>
+            <input
+              type="number"
+              id={`${instanceId}-maint`}
+              data-field="maint"
+              step="0.01"
+              min="0"
+              value={rates.defaultMaintenanceDepreciationPerMile.toFixed(2)}
+              class="calc-input block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-900 focus:border-brand-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white min-h-[44px]"
+              inputmode="decimal"
+            />
+          </div>
+        </div>
+
+        <!-- Customizable Verdict Thresholds Accordion -->
+        <details class="text-xs text-slate-600 dark:text-slate-400 group pt-1">
+          <summary class="cursor-pointer font-medium text-slate-700 dark:text-slate-300 flex items-center justify-between hover:text-brand-600">
+            <span>⚙️ Customize your target hourly pay thresholds</span>
+            <span class="group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700 grid grid-cols-2 gap-3">
+            <div>
+              <label for={`${instanceId}-target-worth`} class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                "Worth It" Min Net $/hr
+              </label>
+              <input
+                type="number"
+                id={`${instanceId}-target-worth`}
+                data-field="threshWorth"
+                step="1"
+                min="10"
+                value={rates.thresholds.worthItMinHourly}
+                class="calc-input block w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-xs font-semibold text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+              />
+            </div>
+            <div>
+              <label for={`${instanceId}-target-border`} class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
+                "Borderline" Min Net $/hr
+              </label>
+              <input
+                type="number"
+                id={`${instanceId}-target-border`}
+                data-field="threshBorder"
+                step="1"
+                min="5"
+                value={rates.thresholds.borderlineMinHourly}
+                class="calc-input block w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-xs font-semibold text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+              />
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- OUTPUTS & VERDICT (Right Column on desktop) -->
+    <div
+      class="lg:col-span-5 flex flex-col justify-between rounded-xl bg-slate-900 p-5 sm:p-6 text-white shadow-md dark:bg-slate-950 border border-slate-800"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <div>
+        <span class="text-xs uppercase tracking-wider font-bold text-slate-400">Order Profitability</span>
+        
+        <!-- VERDICT BADGE -->
+        <div class="calc-verdict-container mt-3 mb-5 p-4 rounded-xl text-center flex flex-col items-center justify-center transition-all bg-emerald-950/70 border border-emerald-500/50">
+          <span class="calc-verdict-icon text-3xl mb-1" aria-hidden="true">✅</span>
+          <span class="calc-verdict-badge text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-emerald-400">
+            Worth It
+          </span>
+          <span class="calc-verdict-detail text-xs text-slate-300 mt-1">
+            Strong margin over operating expenses
+          </span>
+        </div>
+
+        <!-- KEY STAT: NET HOURLY -->
+        <div class="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700/60 mb-4 text-center">
+          <span class="block text-xs uppercase tracking-wider font-semibold text-slate-400">
+            Net Pay Per Hour (After Gas & Wear)
+          </span>
+          <span class="calc-net-hourly text-3xl sm:text-4xl font-black text-white tracking-tight mt-0.5 block">
+            $21.78/hr
+          </span>
+        </div>
+
+        <!-- BREAKDOWN METRICS GRID -->
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-800">
+            <span class="block text-slate-400 font-medium">Pay / Mile</span>
+            <span class="calc-pay-per-mile text-base font-bold text-white mt-0.5 block">$2.02/mi</span>
+          </div>
+          <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-800">
+            <span class="block text-slate-400 font-medium">Gross Hourly</span>
+            <span class="calc-gross-hourly text-base font-bold text-white mt-0.5 block">$25.50/hr</span>
+          </div>
+          <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-800">
+            <span class="block text-slate-400 font-medium">Est. Fuel Cost</span>
+            <span class="calc-fuel-cost text-base font-bold text-rose-300 mt-0.5 block">$0.56</span>
+          </div>
+          <div class="bg-slate-800/50 p-2.5 rounded-lg border border-slate-800">
+            <span class="block text-slate-400 font-medium">Vehicle Wear</span>
+            <span class="calc-vehicle-cost text-base font-bold text-rose-300 mt-0.5 block">$0.63</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Net Dollar Return -->
+      <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <span>Estimated Clean Profit:</span>
+        <span class="calc-clean-profit font-bold text-sm text-emerald-400">$7.31</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW WE CALCULATE THIS -->
+  <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+    <details class="group text-sm">
+      <summary class="font-bold text-slate-900 dark:text-slate-100 cursor-pointer flex items-center justify-between select-none py-1 hover:text-brand-600">
+        <span class="flex items-center gap-2">
+          <span>📐</span>
+          <span>How We Calculate This (Formulas & Expense Assumptions)</span>
+        </span>
+        <span class="group-open:rotate-180 transition-transform text-slate-400">▼</span>
+      </summary>
+      <div class="mt-4 space-y-3 text-slate-600 dark:text-slate-400 leading-relaxed text-sm bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800">
+        <p>
+          Unlike simple "gross pay" screens in delivery apps, DasherMath models real vehicular expenses before computing your hourly wage:
+        </p>
+        <ul class="list-disc pl-5 space-y-1.5 font-mono text-xs">
+          <li><strong>Fuel Cost</strong> = (Total Distance ÷ MPG) × Gas Price per Gallon</li>
+          <li><strong>Wear & Depreciation</strong> = Total Distance × Maintenance Override ($0.15/mi default)</li>
+          <li><strong>Net Order Profit</strong> = Offered Pay − (Fuel Cost + Wear Cost)</li>
+          <li><strong>Net Hourly Rate</strong> = Net Order Profit ÷ (Trip Minutes ÷ 60)</li>
+        </ul>
+        <p class="text-xs text-slate-500 dark:text-slate-400 pt-1">
+          * Note: Standard business tax deductions allow writing off mileage ({rates.irsMileageRateYear} IRS benchmark: ${rates.irsStandardMileageRate}/mi for Jul 1–Dec 31, 2026; ${rates.irsStandardMileageRateJanToJun}/mi for Jan 1–Jun 30, 2026). This tool measures actual out-of-pocket cash flow and depreciation, rather than the IRS standard deduction. Hourly thresholds ($20/hr and $12/hr) are subjective driver preference defaults and can be adjusted above.
+        </p>
+      </div>
+    </details>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    function initCalculators() {
+      const roots = document.querySelectorAll('[data-calculator-root]');
+
+      roots.forEach((root) => {
+        // Prevent duplicate listener binding
+        if (root.dataset.initialized === 'true') return;
+        root.dataset.initialized = 'true';
+
+        const defaultGas = parseFloat(root.dataset.defaultGas || '3.45');
+        const defaultMpg = parseFloat(root.dataset.defaultMpg || '26');
+        const defaultMaint = parseFloat(root.dataset.defaultMaint || '0.15');
+        const initialThreshWorth = parseFloat(root.dataset.thresholdWorth || '20');
+        const initialThreshBorder = parseFloat(root.dataset.thresholdBorder || '12');
+
+        const inputs = {
+          pay: root.querySelector('[data-field="pay"]'),
+          miles: root.querySelector('[data-field="miles"]'),
+          minutes: root.querySelector('[data-field="minutes"]'),
+          mpg: root.querySelector('[data-field="mpg"]'),
+          gas: root.querySelector('[data-field="gas"]'),
+          maint: root.querySelector('[data-field="maint"]'),
+          threshWorth: root.querySelector('[data-field="threshWorth"]'),
+          threshBorder: root.querySelector('[data-field="threshBorder"]'),
+        };
+
+        const outputs = {
+          verdictContainer: root.querySelector('.calc-verdict-container'),
+          verdictIcon: root.querySelector('.calc-verdict-icon'),
+          verdictBadge: root.querySelector('.calc-verdict-badge'),
+          verdictDetail: root.querySelector('.calc-verdict-detail'),
+          netHourly: root.querySelector('.calc-net-hourly'),
+          payPerMile: root.querySelector('.calc-pay-per-mile'),
+          grossHourly: root.querySelector('.calc-gross-hourly'),
+          fuelCost: root.querySelector('.calc-fuel-cost'),
+          vehicleCost: root.querySelector('.calc-vehicle-cost'),
+          cleanProfit: root.querySelector('.calc-clean-profit'),
+        };
+
+        const resetBtn = root.querySelector('.calc-reset-btn');
+
+        function formatCurrency(val) {
+          if (isNaN(val) || !isFinite(val)) return '$0.00';
+          return `$${val.toFixed(2)}`;
+        }
+
+        function calculate() {
+          const pay = parseFloat(inputs.pay?.value || '0');
+          const miles = parseFloat(inputs.miles?.value || '0');
+          const minutes = parseFloat(inputs.minutes?.value || '0');
+          const mpg = parseFloat(inputs.mpg?.value || '25');
+          const gas = parseFloat(inputs.gas?.value || '0');
+          const maint = parseFloat(inputs.maint?.value || '0');
+
+          const threshWorth = parseFloat(inputs.threshWorth?.value || String(initialThreshWorth));
+          const threshBorder = parseFloat(inputs.threshBorder?.value || String(initialThreshBorder));
+
+          // 1. Pay Per Mile
+          const payPerMile = miles > 0 ? pay / miles : 0;
+
+          // 2. Gross Hourly
+          const hours = minutes > 0 ? minutes / 60 : 0;
+          const grossHourly = hours > 0 ? pay / hours : 0;
+
+          // 3. Fuel Cost
+          const gallonsUsed = (mpg > 0 && miles > 0) ? miles / mpg : 0;
+          const fuelCost = gallonsUsed * gas;
+
+          // 4. Vehicle wear & depreciation
+          const vehicleCost = miles > 0 ? miles * maint : 0;
+
+          // 5. Net order profit & net hourly
+          const totalExpenses = fuelCost + vehicleCost;
+          const cleanProfit = Math.max(pay - totalExpenses, -100);
+          const netHourly = hours > 0 ? cleanProfit / hours : 0;
+
+          // Render Safe Outputs
+          if (outputs.payPerMile) outputs.payPerMile.textContent = `${formatCurrency(payPerMile)}/mi`;
+          if (outputs.grossHourly) outputs.grossHourly.textContent = `${formatCurrency(grossHourly)}/hr`;
+          if (outputs.fuelCost) outputs.fuelCost.textContent = formatCurrency(fuelCost);
+          if (outputs.vehicleCost) outputs.vehicleCost.textContent = formatCurrency(vehicleCost);
+          if (outputs.cleanProfit) {
+            outputs.cleanProfit.textContent = formatCurrency(cleanProfit);
+            outputs.cleanProfit.className = `calc-clean-profit font-bold text-sm ${cleanProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+          }
+          if (outputs.netHourly) {
+            outputs.netHourly.textContent = `${formatCurrency(netHourly)}/hr`;
+          }
+
+          // Compute Verdict
+          if (!outputs.verdictContainer) return;
+
+          // Reset verdict container styles
+          outputs.verdictContainer.className = 'calc-verdict-container mt-3 mb-5 p-4 rounded-xl text-center flex flex-col items-center justify-center transition-all';
+
+          if (pay <= 0 || minutes <= 0 || miles <= 0) {
+            outputs.verdictContainer.classList.add('bg-slate-800', 'border', 'border-slate-700');
+            outputs.verdictIcon.textContent = '⏳';
+            outputs.verdictBadge.textContent = 'Enter Details';
+            outputs.verdictBadge.className = 'calc-verdict-badge text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-slate-300';
+            outputs.verdictDetail.textContent = 'Fill pay, distance, and time above to evaluate order';
+          } else if (netHourly >= threshWorth) {
+            outputs.verdictContainer.classList.add('bg-emerald-950/70', 'border', 'border-emerald-500/50');
+            outputs.verdictIcon.textContent = '✅';
+            outputs.verdictBadge.textContent = 'Worth It';
+            outputs.verdictBadge.className = 'calc-verdict-badge text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-emerald-400';
+            outputs.verdictDetail.textContent = `Generates >$${threshWorth.toFixed(0)}/hr net after all fuel & wear costs`;
+          } else if (netHourly >= threshBorder) {
+            outputs.verdictContainer.classList.add('bg-amber-950/70', 'border', 'border-amber-500/50');
+            outputs.verdictIcon.textContent = '⚠️';
+            outputs.verdictBadge.textContent = 'Borderline';
+            outputs.verdictBadge.className = 'calc-verdict-badge text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-amber-400';
+            outputs.verdictDetail.textContent = `Between $${threshBorder.toFixed(0)} and $${threshWorth.toFixed(0)}/hr net. Accept if slow or near home.`;
+          } else {
+            outputs.verdictContainer.classList.add('bg-rose-950/70', 'border', 'border-rose-500/50');
+            outputs.verdictIcon.textContent = '🛑';
+            outputs.verdictBadge.textContent = 'Skip It';
+            outputs.verdictBadge.className = 'calc-verdict-badge text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-rose-400';
+            outputs.verdictDetail.textContent = `Under $${threshBorder.toFixed(0)}/hr net. Vehicle expenses consume too much pay.`;
+          }
+        }
+
+        // Add live input listeners
+        Object.values(inputs).forEach((input) => {
+          if (!input) return;
+          input.addEventListener('input', calculate);
+          input.addEventListener('change', calculate);
+        });
+
+        if (resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            if (inputs.mpg) inputs.mpg.value = String(defaultMpg);
+            if (inputs.gas) inputs.gas.value = defaultGas.toFixed(2);
+            if (inputs.maint) inputs.maint.value = defaultMaint.toFixed(2);
+            if (inputs.threshWorth) inputs.threshWorth.value = String(initialThreshWorth);
+            if (inputs.threshBorder) inputs.threshBorder.value = String(initialThreshBorder);
+            calculate();
+          });
+        }
+
+        // Run initial calculation
+        calculate();
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCalculators);
+    } else {
+      initCalculators();
+    }
+  })();
+</script>

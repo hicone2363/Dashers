@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE_CONFIG } from '../data/config';
+
+const title = `Privacy Policy | ${SITE_CONFIG.siteName}`;
+const description = `Privacy Policy for ${SITE_CONFIG.siteName}. Learn how we handle local calculator execution, optional Google Analytics, and display advertising cookies.`;
+
+const breadcrumbs = [
+  { name: 'Privacy Policy', url: '/privacy-policy/' }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={Astro.url.href}
+  breadcrumbs={breadcrumbs}
+>
+  <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
+        Privacy Policy
+      </h1>
+      <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+        Effective Date: October 2026 &bull; Last Revised: {SITE_CONFIG.rates.ratesLastUpdated}
+      </p>
+    </header>
+
+    <div class="prose prose-slate max-w-none dark:prose-invert space-y-6 text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+      <h2>1. Local Calculator Data (No Server Transmission)</h2>
+      <p>
+        At {SITE_CONFIG.siteName}, we respect courier confidentiality. <strong>The data you enter into our calculators (including order pay, trip mileage, vehicle MPG, gas price, and hourly earnings thresholds) is processed exclusively in your device's browser memory.</strong>
+      </p>
+      <ul>
+        <li>We do not record, log, or transmit your individual order values to our servers.</li>
+        <li>We do not save your delivery numbers into persistent tracking profiles.</li>
+        <li>The core calculator works completely without accounts, logins, or localStorage dependencies.</li>
+      </ul>
+
+      <h2>2. Web Analytics (Google Analytics)</h2>
+      <p>
+        To understand aggregate site traffic (such as which guides are most read and what device screen sizes couriers use), this website may utilize Google Analytics (via privacy-conscious IP anonymization):
+      </p>
+      <ul>
+        <li>Google Analytics collects standard anonymous metrics, such as pages viewed, duration of visit, and approximate geographical region (city/state level).</li>
+        <li>Analytics tracking does <strong>not</strong> observe or capture the numbers entered into the Order Calculator.</li>
+        <li>You can disable Google Analytics tracking across the web by installing the official <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">Google Analytics Opt-out Browser Add-on</a>.</li>
+      </ul>
+
+      <h2>3. Third-Party Display Advertising and Cookies</h2>
+      <p>
+        To keep this site free for couriers, {SITE_CONFIG.siteName} may display third-party advertisements (such as Google AdSense or programmatic ad exchanges).
+      </p>
+      <ul>
+        <li>Third-party ad vendors and ad networks use cookies and web beacons to serve advertisements based on prior visits to this and other websites.</li>
+        <li>Google's use of advertising cookies enables it and its partners to serve ads based on your visit to {SITE_CONFIG.siteName} and other sites on the Internet.</li>
+        <li>Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">Google Ads Settings</a> or through the <a href="https://optout.aboutads.info" target="_blank" rel="noopener noreferrer" class="text-brand-600 underline">AboutAds.info</a> opt-out service.</li>
+      </ul>
+
+      <h2>4. Server Log Information</h2>
+      <p>
+        Our hosting infrastructure (Cloudflare Pages / Netlify) routinely logs standard technical connection data: IP address, user-agent string, referring URL, and timestamp. This data is retained strictly for site security, DDoS mitigation, and system health monitoring.
+      </p>
+
+      <h2>5. Contact Regarding Privacy</h2>
+      <p>
+        If you have questions about our data practices, contact us at <a href={`mailto:${SITE_CONFIG.contactEmail}`} class="text-brand-600 underline">{SITE_CONFIG.contactEmail}</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

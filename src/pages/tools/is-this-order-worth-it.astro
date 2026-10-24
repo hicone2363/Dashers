@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import OrderCalculator from '../../components/OrderCalculator.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import RelatedGuides from '../../components/RelatedGuides.astro';
+import { SITE_CONFIG } from '../../data/config';
+
+const title = "Is This Order Worth It? DoorDash Delivery Profit Calculator";
+const description = "Free instant calculator for DoorDash drivers. Input offer pay, miles, and time to calculate fuel cost, vehicle depreciation, and net hourly earnings.";
+
+const breadcrumbs = [
+  { name: 'Tools', url: '/tools/is-this-order-worth-it/' },
+  { name: 'Is This Order Worth It?', url: '/tools/is-this-order-worth-it/' }
+];
+
+const faqs = [
+  {
+    question: "How does the calculator determine if an order is 'Worth It'?",
+    answer: `By default, the calculator categorizes net hourly pay into three tiers: Worth It (Net ≥ $${SITE_CONFIG.rates.thresholds.worthItMinHourly.toFixed(0)}/hr), Borderline ($${SITE_CONFIG.rates.thresholds.borderlineMinHourly.toFixed(0)} to $${SITE_CONFIG.rates.thresholds.worthItMinHourly.toFixed(0)}/hr), and Skip It (Under $${SITE_CONFIG.rates.thresholds.borderlineMinHourly.toFixed(0)}/hr). You can customize these thresholds in the settings.`
+  },
+  {
+    question: "Why does the tool deduct vehicle maintenance and depreciation?",
+    answer: "Every mile driven incurs wear on tires, brake pads, transmission, oil, and automobile resale value. Relying on gross pay without factoring in depreciation leads many couriers to believe they are making more profit than they actually are."
+  },
+  {
+    question: "What is a good dollar-per-mile ratio for DoorDash?",
+    answer: "Most experienced gig delivery couriers target at least $1.50 to $2.00 per mile. In high-cost urban zones or during rush hour, drivers often look for $2.50+ per mile to account for traffic delays."
+  },
+  {
+    question: "Does this calculator save my personal vehicle data?",
+    answer: "No. The calculator runs 100% locally in your web browser. No data is sent to our servers or saved in persistent tracking cookies."
+  }
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={Astro.url.href}
+  type="website"
+  breadcrumbs={breadcrumbs}
+  faqs={faqs}
+>
+  <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+    <Breadcrumbs items={breadcrumbs} />
+
+    <header class="mb-6">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-50 text-brand-600 dark:bg-brand-950/60 dark:text-brand-400 border border-brand-200 dark:border-brand-800 mb-3">
+        <span>⚡</span>
+        <span>Free Dasher Decision Tool</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
+        Is This Order Worth It?
+      </h1>
+      <p class="mt-3 text-lg text-slate-600 dark:text-slate-300 max-w-3xl">
+        DoorDash only shows you gross pay. Enter the order numbers below to see true fuel expense, vehicle wear, and real net hourly profit before you accept.
+      </p>
+    </header>
+
+    <!-- Top Ad Slot -->
+    <AdSlot slotType="leaderboard" slotId="calc-page-top" />
+
+    <!-- PRIMARY CALCULATOR COMPONENT -->
+    <div class="my-6">
+      <OrderCalculator instanceId="primary-order-calculator" />
+    </div>
+
+    <!-- EXPLANATORY CONTENT / STRATEGY GUIDE -->
+    <section class="my-10 space-y-8 text-slate-700 dark:text-slate-300 text-base leading-relaxed">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 dark:border-slate-800 dark:bg-slate-900/60">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          The 3 Golden Rules of DoorDash Order Selection
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="space-y-2">
+            <div class="h-10 w-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold text-lg">
+              1
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+              Respect the Dollar-Per-Mile
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              Orders offering less than $1.25/mile rarely generate net profit after deducting fuel ($0.12–$0.20/mi) and maintenance ($0.15/mi). Target $1.50+ for suburban and $2.00+ for dense cities.
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <div class="h-10 w-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold text-lg">
+              2
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+              Account for Deadhead Return Miles
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              If an offer takes you 6 miles out into rural farmland or residential cul-de-sacs with no restaurants, you have to drive 6 miles back unpaid. Always double the mileage on zone-leaving orders.
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <div class="h-10 w-10 rounded-xl bg-brand-500 text-white flex items-center justify-center font-bold text-lg">
+              3
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+              Penalize Slow Merchants
+            </h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+              A $10 order for 2 miles looks great until you wait 25 minutes at the counter. Total minutes matter just as much as miles when calculating net earnings per hour.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mid Ad Slot -->
+    <AdSlot slotType="inlineRectangle" slotId="calc-page-mid" />
+
+    <!-- FAQ Section -->
+    <FaqAccordion faqs={faqs} title="Frequently Asked Questions About Order Profitability" />
+
+    <!-- Related Guides -->
+    <RelatedGuides />
+
+    <!-- Compliance Disclaimer -->
+    <div class="mt-10 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+      <p>
+        <strong>Disclaimer:</strong> {SITE_CONFIG.disclaimer}
+      </p>
+    </div>
+  </div>
+</BaseLayout>
